@@ -78,19 +78,18 @@ sudo systemctl enable --now NetworkManager
 
 ## Installation
 
-> You only need **one file**: `dotfiles.tar.gz`
-> Everything else is inside it.
-
 ```bash
-# 1. Download dotfiles.tar.gz
+# 1. Clone the repository
+git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
 
-# 2. Extract
-tar -xzf dotfiles.tar.gz
+# 2. Go into the folder
+cd ~/dotfiles
 
 # 3. Run the installer
-cd dotfiles
 bash install.sh
 ```
+
+> Replace `yourusername` with your actual GitHub username.
 
 The script is fully automated. It will:
 
