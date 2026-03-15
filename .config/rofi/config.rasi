@@ -1,0 +1,17 @@
+/* ╔═══════════════════════════════════════╗
+   ║            rofi/config.rasi           ║
+   ╚═══════════════════════════════════════╝ */
+
+configuration {
+    modi:            "drun,run,window";
+    show-icons:      true;
+    icon-theme:      "Papirus-Dark";
+    font:            "JetBrainsMono Nerd Font 12";
+    drun-display-format: "{name}";
+    display-drun:    "  Apps";
+    display-run:     "  Run";
+    display-window:  "  Windows";
+    kb-cancel:       "Escape,Super+d";
+}
+
+@theme "~/.config/rofi/theme.rasi"

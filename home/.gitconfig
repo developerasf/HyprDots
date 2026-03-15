@@ -1,0 +1,79 @@
+# ╔═══════════════════════════════════════╗
+# ║              ~/.gitconfig             ║
+# ╚═══════════════════════════════════════╝
+# Edit [user] section with your real name and email after install.
+
+[user]
+    name  = Your Name
+    email = you@example.com
+
+[core]
+    editor     = nvim
+    pager      = delta
+    autocrlf   = input
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[init]
+    defaultBranch = main
+
+[push]
+    default       = current
+    autoSetupRemote = true
+
+[pull]
+    rebase = false
+
+[merge]
+    tool = nvim
+    conflictstyle = diff3
+
+[diff]
+    tool      = nvim
+    colorMoved = default
+
+[color]
+    ui = auto
+
+[color "branch"]
+    current  = yellow bold
+    local    = green bold
+    remote   = cyan bold
+
+[color "diff"]
+    meta     = yellow bold
+    frag     = magenta bold
+    old      = red bold
+    new      = green bold
+    whitespace = red reverse
+
+[color "status"]
+    added     = green bold
+    changed   = yellow bold
+    untracked = red bold
+
+[alias]
+    st   = status
+    co   = checkout
+    br   = branch
+    ci   = commit
+    df   = diff
+    lg   = log --oneline --graph --decorate --all
+    undo = reset HEAD~1 --mixed
+    wip  = commit -am "wip: work in progress"
+    oops = commit --amend --no-edit
+
+[credential]
+    helper = store
+
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+
+[delta]
+    navigate    = true
+    dark        = true
+    line-numbers = true
+    syntax-theme = TwoDark
+    side-by-side = false
+
+[interactive]
+    diffFilter = delta --color-only

@@ -1,0 +1,84 @@
+# ╔═══════════════════════════════════════╗
+# ║           yazi/keymap.toml            ║
+# ╚═══════════════════════════════════════╝
+# Extends defaults — only overrides listed here.
+
+[manager]
+keymap = [
+    # ── Navigation (vim keys) ────────────────────────────────────────────────
+    { on = "h",         run = "leave",            desc = "Go to parent dir"  },
+    { on = "l",         run = "enter",            desc = "Enter dir / open"  },
+    { on = "j",         run = "arrow 1",          desc = "Move down"         },
+    { on = "k",         run = "arrow -1",         desc = "Move up"           },
+    { on = "J",         run = "arrow 5",          desc = "Move down 5"       },
+    { on = "K",         run = "arrow -5",         desc = "Move up 5"         },
+    { on = "g g",       run = "arrow -99999999",  desc = "Go to top"         },
+    { on = "G",         run = "arrow 99999999",   desc = "Go to bottom"      },
+    { on = "<C-d>",     run = "arrow 50%",        desc = "Half page down"    },
+    { on = "<C-u>",     run = "arrow -50%",       desc = "Half page up"      },
+
+    # ── Go to common dirs ────────────────────────────────────────────────────
+    { on = ["g", "h"],  run = "cd ~",             desc = "Go home"           },
+    { on = ["g", "c"],  run = "cd ~/.config",     desc = "Go ~/.config"      },
+    { on = ["g", "d"],  run = "cd ~/Downloads",   desc = "Go ~/Downloads"    },
+    { on = ["g", "p"],  run = "cd ~/Pictures",    desc = "Go ~/Pictures"     },
+    { on = ["g", "D"],  run = "cd ~/Documents",   desc = "Go ~/Documents"    },
+    { on = ["g", "P"],  run = "cd ~/Projects",    desc = "Go ~/Projects"     },
+
+    # ── File ops ─────────────────────────────────────────────────────────────
+    { on = "o",         run = "open",             desc = "Open"              },
+    { on = "O",         run = "open --interactive", desc = "Open with..."    },
+    { on = "e",         run = "open --hovered",   desc = "Edit in nvim"      },
+    { on = "r",         run = "rename --cursor=before_ext", desc = "Rename"  },
+    { on = "d",         run = "trash",            desc = "Trash"             },
+    { on = "D",         run = "remove",           desc = "Delete (no trash)" },
+    { on = "a",         run = "create",           desc = "Create file/dir"   },
+    { on = "c",         run = "copy yank",        desc = "Copy (yank)"       },
+    { on = "x",         run = "cut yank",         desc = "Cut (yank)"        },
+    { on = "p",         run = "paste",            desc = "Paste"             },
+    { on = "P",         run = "paste --force",    desc = "Paste (overwrite)" },
+    { on = "y",         run = "copy path",        desc = "Copy path"         },
+    { on = "Y",         run = "copy filename",    desc = "Copy filename"     },
+
+    # ── Selection ────────────────────────────────────────────────────────────
+    { on = "<Space>",   run = "select --state=none", desc = "Toggle select"  },
+    { on = "v",         run = "visual_mode",      desc = "Visual mode"       },
+    { on = "V",         run = "select_all --state=none", desc = "Select all" },
+
+    # ── Search / filter ──────────────────────────────────────────────────────
+    { on = "/",         run = "find --smart",     desc = "Find (smart case)" },
+    { on = "f",         run = "filter --smart",   desc = "Filter"            },
+    { on = "F",         run = "search fd",        desc = "Search with fd"    },
+
+    # ── Tabs ─────────────────────────────────────────────────────────────────
+    { on = "t",         run = "tab_create --current", desc = "New tab"       },
+    { on = "1",         run = "tab_switch 0",     desc = "Tab 1"             },
+    { on = "2",         run = "tab_switch 1",     desc = "Tab 2"             },
+    { on = "3",         run = "tab_switch 2",     desc = "Tab 3"             },
+    { on = "[",         run = "tab_switch -1 --relative", desc = "Prev tab"  },
+    { on = "]",         run = "tab_switch 1 --relative",  desc = "Next tab"  },
+
+    # ── UI toggles ───────────────────────────────────────────────────────────
+    { on = ".",         run = "hidden toggle",    desc = "Toggle hidden"     },
+    { on = "z",         run = "plugin zoxide",    desc = "Zoxide jump"       },
+    { on = "q",         run = "quit",             desc = "Quit"              },
+    { on = "<Esc>",     run = "escape",           desc = "Escape"            },
+    { on = "?",         run = "help",             desc = "Help"              },
+]
+
+[input]
+keymap = [
+    { on = "<Esc>",   run = "close",        desc = "Cancel"         },
+    { on = "<Enter>", run = "submit",       desc = "Submit"         },
+    { on = "i",       run = "insert",       desc = "Insert mode"    },
+    { on = "h",       run = "move -1",      desc = "Move left"      },
+    { on = "l",       run = "move 1",       desc = "Move right"     },
+    { on = "b",       run = "backward",     desc = "Word backward"  },
+    { on = "w",       run = "forward",      desc = "Word forward"   },
+    { on = "0",       run = "move -999",    desc = "Start of line"  },
+    { on = "$",       run = "move 999",     desc = "End of line"    },
+    { on = "<C-a>",   run = "move -999",    desc = "Start of line"  },
+    { on = "<C-e>",   run = "move 999",     desc = "End of line"    },
+    { on = "<C-u>",   run = "kill bol",     desc = "Kill to start"  },
+    { on = "<C-k>",   run = "kill eol",     desc = "Kill to end"    },
+]

@@ -1,0 +1,80 @@
+# ╔═══════════════════════════════════════╗
+# ║          zathura/zathurarc            ║
+# ║          Tokyo Night                  ║
+# ╚═══════════════════════════════════════╝
+
+# ── Appearance ────────────────────────────────────────────────────────────────
+set font                  "JetBrainsMono Nerd Font 11"
+set default-bg            "#1a1b26"
+set default-fg            "#c0caf5"
+
+set statusbar-bg          "#16161e"
+set statusbar-fg          "#565f89"
+
+set inputbar-bg           "#1a1b26"
+set inputbar-fg           "#c0caf5"
+
+set notification-bg       "#1a1b26"
+set notification-fg       "#c0caf5"
+set notification-error-bg "#1a1b26"
+set notification-error-fg "#f7768e"
+set notification-warning-bg "#1a1b26"
+set notification-warning-fg "#e0af68"
+
+set highlight-color       "#7aa2f780"
+set highlight-active-color "#7aa2f7"
+
+set completion-bg         "#24283b"
+set completion-fg         "#c0caf5"
+set completion-highlight-bg "#7aa2f730"
+set completion-highlight-fg "#7aa2f7"
+set completion-group-bg   "#1a1b26"
+set completion-group-fg   "#565f89"
+
+set index-bg              "#1a1b26"
+set index-fg              "#c0caf5"
+set index-active-bg       "#24283b"
+set index-active-fg       "#7aa2f7"
+
+set render-loading-bg     "#1a1b26"
+set render-loading-fg     "#c0caf5"
+
+# ── Dark mode (inverts PDF to dark bg) ────────────────────────────────────────
+set recolor                    true
+set recolor-lightcolor         "#1a1b26"
+set recolor-darkcolor          "#c0caf5"
+set recolor-keephue            false
+
+# ── Behaviour ─────────────────────────────────────────────────────────────────
+set pages-per-row              1
+set page-padding               4
+set scroll-step                40
+set zoom-min                   10
+set zoom-max                   1000
+set zoom-step                  5
+set adjust-open                "best-fit"
+set statusbar-h-padding        10
+set statusbar-v-padding        4
+set window-title-basename      true
+set selection-clipboard        clipboard
+
+# ── Keybinds (vim-style, already default but made explicit) ───────────────────
+map j  scroll down
+map k  scroll up
+map h  scroll left
+map l  scroll right
+map J  navigate next
+map K  navigate previous
+map gg goto top
+map G  goto bottom
+map d  scroll half-down
+map u  scroll half-up
+map r  reload
+map R  rotate
+map i  recolor                 # toggle dark mode on/off
+map p  print
+map f  toggle_fullscreen
+map +  zoom in
+map -  zoom out
+map =  adjust_window best-fit
+map W  adjust_window width
