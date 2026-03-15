@@ -80,10 +80,10 @@ sudo systemctl enable --now NetworkManager
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+git clone https://github.com/developerasf/HyprDots.git ~/dotfiles
 
 # 2. Go into the folder
-cd ~/dotfiles
+cd ~/HyprDots
 
 # 3. Run the installer
 bash install.sh
