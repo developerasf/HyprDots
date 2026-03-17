@@ -4,8 +4,8 @@
 # Edit [user] section with your real name and email after install.
 
 [user]
-    name  = "Md. Al Amin"
-    email = alaminsarkar863@gmail.com
+    name  = "name"
+    email = example@gmail.com
 
 [core]
     editor     = nvim
