@@ -1,8 +1,9 @@
-﻿-:Thumbs.db
+-:Thumbs.db
 -:desktop.ini
 -:~*
--:.*
+#-:.*
 -:*~.*
 -:*.crdownload
 -:*.sb-????????-??????
 -:*.tmp
+-s:*
