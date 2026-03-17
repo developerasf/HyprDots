@@ -120,7 +120,7 @@ alias zshconfig='nvim ~/.zshrc'
 alias hyprconfig='nvim ~/.config/hypr/hyprland.conf'
 
 # ── Aliases — tools ───────────────────────────────────────────────────────────
-alias cat='bat --style=plain --paging=never 2>/dev/null || cat'
+# alias cat='bat --style=plain --paging=never 2>/dev/null || cat'
 alias grep='grep --color=auto'
 alias yazi='yazi'
 alias y='yazi'
@@ -174,3 +174,6 @@ extract() {
         echo "'$1' is not a valid file"
     fi
 }
+
+# opencode
+export PATH=/home/asf/.opencode/bin:$PATH

@@ -1,122 +1,107 @@
-/* ╔═══════════════════════════════════════╗
-   ║         waybar/style.css              ║
-   ║         Tokyo Night theme             ║
-   ╚═══════════════════════════════════════╝ */
-
 /* ── Palette ─────────────────────────────────────────────────────────────── */
 /* bg=#1a1b26  bg2=#24283b  fg=#c0caf5  blue=#7aa2f7  magenta=#bb9af7       */
 /* dim=#565f89  red=#f7768e  green=#9ece6a  yellow=#e0af68                   */
 
 * {
-    font-family: "JetBrainsMono Nerd Font", monospace;
-    font-size:   13px;
-    border:      none;
+    font-family: "JetBrainsMono Nerd Font", "Roboto", sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
     border-radius: 0;
-    min-height:  0;
+    min-height: 0;
 }
 
 window#waybar {
-    background: rgba(26, 27, 38, 0.92);
-    border:     1px solid rgba(122, 162, 247, 0.2);
-    border-radius: 12px;
-    color:      #c0caf5;
+    background: rgba(26, 27, 38, 0.85); /* Glassmorphism */
+    color: #c0caf5;
+    transition-property: background-color;
+    transition-duration: .5s;
+    border-bottom: 2px solid rgba(122, 162, 247, 0.1);
 }
 
 /* ── Workspaces ───────────────────────────────────────────────────────────── */
 #workspaces {
-    background:    rgba(36, 40, 59, 0.8);
-    border-radius: 10px;
-    padding:       0 6px;
-    margin:        4px 4px;
+    background: #24283b;
+    margin: 4px;
+    padding: 0px 5px;
+    border-radius: 15px;
+    border: 1px solid rgba(122, 162, 247, 0.2);
 }
+
 #workspaces button {
-    color:      #565f89;
-    padding:    0 6px;
+    padding: 0px 10px;
+    color: #565f89;
     background: transparent;
-    transition: all 0.2s ease;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(.55,-0.04,.3,1.44);
 }
-#workspaces button:hover {
-    background: rgba(122, 162, 247, 0.15);
-    color:      #7aa2f7;
-    border-radius: 6px;
-}
+
 #workspaces button.active {
-    color:         #7aa2f7;
-    background:    rgba(122, 162, 247, 0.2);
-    border-radius: 6px;
-}
-#workspaces button.urgent {
-    color:      #f7768e;
-    background: rgba(247, 118, 142, 0.2);
-    border-radius: 6px;
+    color: #7aa2f7;
+    background: rgba(122, 162, 247, 0.15);
+    min-width: 30px; /* Makes the active number stand out */
 }
 
-/* ── Window title ─────────────────────────────────────────────────────────── */
-#window {
-    color:   #565f89;
-    padding: 0 10px;
-    font-style: italic;
+#workspaces button:hover {
+    color: #c0caf5;
+    background: rgba(122, 162, 247, 0.1);
 }
 
-/* ── Clock ───────────────────────────────────────────────────────────────── */
+/* ── Center Clock (The Pill) ─────────────────────────────────────────────── */
 #clock {
-    background:    rgba(122, 162, 247, 0.15);
-    color:         #7aa2f7;
+    color: #7aa2f7;
+    background: linear-gradient(45deg, #24283b 0%, #1a1b26 100%);
+    border: 1px solid rgba(122, 162, 247, 0.2);
+    border-radius: 15px;
+    padding: 0 15px;
+    margin: 4px 0;
+}
+
+/* ── Right Modules Styling ───────────────────────────────────────────────── */
+#tray, #pulseaudio, #bluetooth, #backlight, #battery, #network, #cpu, #memory, #temperature, #custom-power {
+    background: #24283b;
+    padding: 0 12px;
+    margin: 4px 2px;
     border-radius: 10px;
-    padding:       2px 14px;
-    margin:        4px 0;
-    font-weight:   600;
+    border-bottom: 2px solid rgba(0,0,0,0.2); /* Subtle depth shadow */
 }
 
-/* ── Right modules shared style ──────────────────────────────────────────── */
-#tray,
-#pulseaudio,
-#backlight,
-#battery,
-#network,
-#cpu,
-#memory,
+/* Module Specific Accents */
+#pulseaudio { color: #7aa2f7; }
+#bluetooth  { color: #b4f9f8; } /* Bright cyan for BT */
+#backlight  { color: #e0af68; }
+#network    { color: #9ece6a; }
+#cpu        { color: #f7768e; }
+#memory     { color: #bb9af7; }
+#temperature { color: #ff9e64; } /* Orange accent for heat */
+
+#battery { color: #9ece6a; }
+#battery.charging { color: #73daca; }
+#battery.warning  { color: #ff9e64; }
+#battery.critical { color: #f7768e; animation: blink 1s steps(5, start) infinite; }
+
 #custom-power {
-    background:    rgba(36, 40, 59, 0.8);
-    border-radius: 10px;
-    padding:       2px 10px;
-    margin:        4px 2px;
-    color:         #c0caf5;
-    transition:    all 0.2s ease;
+    color: #f7768e;
+    background: rgba(247, 118, 142, 0.1);
+    border: 1px solid rgba(247, 118, 142, 0.2);
+    margin-right: 8px;
 }
 
-#tray { padding: 2px 8px; }
-
-/* ── Per-module accent colors ─────────────────────────────────────────────── */
-#pulseaudio  { color: #7dcfff; }
-#backlight   { color: #e0af68; }
-#network     { color: #9ece6a; }
-#cpu         { color: #bb9af7; }
-#memory      { color: #bb9af7; }
-
-#battery {
-    color: #9ece6a;
-}
-#battery.warning  { color: #e0af68; }
-#battery.critical { color: #f7768e; }
-#battery.charging { color: #9ece6a; }
-
-#pulseaudio.muted { color: #565f89; }
-
-/* ── Power button ────────────────────────────────────────────────────────── */
-#custom-power {
-    color:      #f7768e;
-    padding:    2px 12px;
-    font-size:  15px;
-}
-#custom-power:hover {
-    background: rgba(247, 118, 142, 0.2);
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes blink {
+    to {
+        background-color: #f7768e;
+        color: #1a1b26;
+    }
 }
 
 /* ── Tooltips ────────────────────────────────────────────────────────────── */
 tooltip {
-    background:    #1a1b26;
-    border:        1px solid rgba(122, 162, 247, 0.3);
-    border-radius: 8px;
-    color:         #c0caf5;
+    background: #1a1b26;
+    border-radius: 10px;
+    border: 1px solid #7aa2f7;
+}
+tooltip label {
+    color: #c0caf5;
+    padding: 5px;
 }

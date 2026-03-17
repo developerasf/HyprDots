@@ -15,19 +15,29 @@
 set -euo pipefail
 
 # ── Terminal colors ───────────────────────────────────────────────────────────
-RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
-BLUE='\033[0;34m'; CYAN='\033[0;36m'; BOLD='\033[1m'; RESET='\033[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+RESET='\033[0m'
 
-info()  { echo -e "${BLUE}${BOLD}[INFO]${RESET}  $*"; }
-ok()    { echo -e "${GREEN}${BOLD}[ OK ]${RESET}  $*"; }
-skip()  { echo -e "${CYAN}${BOLD}[SKIP]${RESET}  $*"; }
-warn()  { echo -e "${YELLOW}${BOLD}[WARN]${RESET}  $*"; }
-error() { echo -e "${RED}${BOLD}[ERR ]${RESET}  $*"; exit 1; }
-step()  { echo -e "\n${CYAN}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n    $*\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"; }
+info() { echo -e "${BLUE}${BOLD}[INFO]${RESET}  $*"; }
+ok() { echo -e "${GREEN}${BOLD}[ OK ]${RESET}  $*"; }
+skip() { echo -e "${CYAN}${BOLD}[SKIP]${RESET}  $*"; }
+warn() { echo -e "${YELLOW}${BOLD}[WARN]${RESET}  $*"; }
+error() {
+    echo -e "${RED}${BOLD}[ERR ]${RESET}  $*"
+    exit 1
+}
+step() { echo -e "\n${CYAN}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n    $*\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"; }
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles_backup/$(date +%Y%m%d_%H%M%S)"
-SKIPPED=0; INSTALLED=0; CONFIGURED=0
+SKIPPED=0
+INSTALLED=0
+CONFIGURED=0
 
 # ── Check if a package is installed by name OR by what it provides ─────────
 pkg_installed() {
@@ -37,7 +47,7 @@ pkg_installed() {
     # Check if any installed package provides this (handles -bin vs base conflicts)
     pacman -Qqo "$pkg" &>/dev/null && return 0
     # Check provides field — catches lazydocker-bin providing lazydocker, etc.
-    pacman -Qq | xargs -I{} pacman -Qi {} 2>/dev/null | \
+    pacman -Qq | xargs -I{} pacman -Qi {} 2>/dev/null |
         grep -q "^Provides.*[: ]${pkg}[ $]" && return 0
     return 1
 }
@@ -47,13 +57,13 @@ pacman_install() {
     local pkg="$1"
     if pacman -Qi "$pkg" &>/dev/null; then
         skip "pacman: $pkg"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
         info "pacman: installing $pkg ..."
         # --noconfirm --ask=4 suppresses ALL prompts including provider selection
         sudo pacman -S --needed --noconfirm --ask=4 "$pkg"
         ok "pacman: $pkg installed"
-        (( INSTALLED++ )) || true
+        ((INSTALLED++)) || true
     fi
 }
 
@@ -66,7 +76,7 @@ aur_install() {
     for name in "${check_names[@]}"; do
         if pacman -Qi "$name" &>/dev/null; then
             skip "AUR: $pkg (installed as $name)"
-            (( SKIPPED++ )) || true
+            ((SKIPPED++)) || true
             return
         fi
     done
@@ -78,7 +88,7 @@ aur_install() {
         --noredownload \
         "$pkg"
     ok "AUR: $pkg installed"
-    (( INSTALLED++ )) || true
+    ((INSTALLED++)) || true
 }
 
 # ── Symlink config — backup existing, skip if symlink already correct ─────────
@@ -89,7 +99,7 @@ link_config() {
 
     if [[ -L "$dst" && "$(readlink "$dst")" == "$src" ]]; then
         skip "config: $(basename "$dst")"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
         return
     fi
 
@@ -103,7 +113,7 @@ link_config() {
 
     ln -sf "$src" "$dst"
     ok "config: linked $(basename "$dst")"
-    (( CONFIGURED++ )) || true
+    ((CONFIGURED++)) || true
 }
 
 # ── Copy system file (needs sudo) — skip if already identical ────────────────
@@ -113,11 +123,11 @@ system_copy() {
     sudo mkdir -p "$(dirname "$dst")"
     if [[ -f "$dst" ]] && diff -q "$src" "$dst" &>/dev/null; then
         skip "system: $dst"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
         sudo cp "$src" "$dst"
         ok "system: $dst"
-        (( CONFIGURED++ )) || true
+        ((CONFIGURED++)) || true
     fi
 }
 
@@ -126,11 +136,11 @@ enable_service() {
     local svc="$1"
     if systemctl is-enabled "$svc" &>/dev/null; then
         skip "service: $svc"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
         sudo systemctl enable "$svc"
         ok "service: $svc enabled"
-        (( CONFIGURED++ )) || true
+        ((CONFIGURED++)) || true
     fi
 }
 
@@ -139,11 +149,11 @@ add_group() {
     local grp="$1"
     if groups "$USER" | grep -qw "$grp"; then
         skip "group: $USER already in $grp"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
         sudo usermod -aG "$grp" "$USER"
         ok "group: added $USER → $grp (re-login to activate)"
-        (( CONFIGURED++ )) || true
+        ((CONFIGURED++)) || true
     fi
 }
 
@@ -175,7 +185,7 @@ step "2 / 9  AUR helper — yay"
 
 if command -v yay &>/dev/null; then
     skip "yay ($(yay --version | head -1))"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 else
     info "Building yay-bin from AUR..."
     cd /tmp && rm -rf yay-bin
@@ -183,7 +193,7 @@ else
     cd yay-bin && makepkg -si --noconfirm
     cd "$DOTFILES_DIR"
     ok "yay installed"
-    (( INSTALLED++ )) || true
+    ((INSTALLED++)) || true
 fi
 
 # ════════════════════════════════════════════════════════════════════
@@ -251,7 +261,7 @@ pacman_install firefox
 # ── System utilities ──────────────────────────────────────────────────────────
 pacman_install cliphist
 pacman_install wl-clipboard
-pacman_install xdg-utils          # xdg-mime for default app associations
+pacman_install xdg-utils # xdg-mime for default app associations
 pacman_install brightnessctl
 pacman_install pipewire
 pacman_install wireplumber
@@ -302,14 +312,17 @@ step "4 / 9  AUR packages"
 
 aur_install swww
 aur_install yazi
-aur_install grimblast-git grimblast grimblast-git   # check both names — AUR installs as grimblast-git
+aur_install grimblast-git grimblast grimblast-git    # check both names — AUR installs as grimblast-git
 aur_install lazydocker-bin lazydocker lazydocker-bin # lazydocker already installed → skip
 aur_install visual-studio-code-bin visual-studio-code-bin code
 aur_install rofi-wayland rofi-wayland rofi
-aur_install sunshine-bin sunshine-bin sunshine  # prebuilt bin — source build often fails
+aur_install sunshine-bin sunshine-bin sunshine # prebuilt bin — source build often fails
 aur_install catppuccin-gtk-theme-mocha
 aur_install unarchiver
-aur_install ly
+aur_install ly-bin
+aur_install icu76
+aur_install brave-bin
+aur_install localsend-bin
 
 # pandoc-bin: prebuilt binary — installs in seconds, zero Haskell dependencies
 # (pandoc from pacman = 229 haskell packages, ~500MB — avoid it)
@@ -322,7 +335,7 @@ step "5 / 9  Manual tools — nvm · pyenv · rustup"
 # ── nvm ───────────────────────────────────────────────────────────────────────
 if [[ -d "$HOME/.nvm" ]]; then
     skip "nvm (already at ~/.nvm)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 else
     info "Installing nvm..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -330,13 +343,13 @@ else
     source "$NVM_DIR/nvm.sh" || true
     nvm install --lts
     ok "nvm + Node LTS installed"
-    (( INSTALLED++ )) || true
+    ((INSTALLED++)) || true
 fi
 
 # ── pyenv ─────────────────────────────────────────────────────────────────────
 if [[ -d "$HOME/.pyenv" ]]; then
     skip "pyenv (already at ~/.pyenv)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 else
     info "Installing pyenv..."
     curl https://pyenv.run | bash
@@ -344,19 +357,19 @@ else
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
     ok "pyenv installed"
-    (( INSTALLED++ )) || true
+    ((INSTALLED++)) || true
 fi
 
 # ── rustup ────────────────────────────────────────────────────────────────────
 if command -v rustup &>/dev/null; then
     skip "rustup ($(rustup --version 2>/dev/null | head -1))"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 else
     info "Installing rustup..."
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
     source "$HOME/.cargo/env" || true
     ok "rustup + stable toolchain installed"
-    (( INSTALLED++ )) || true
+    ((INSTALLED++)) || true
 fi
 
 # ════════════════════════════════════════════════════════════════════
@@ -365,36 +378,36 @@ step "6 / 9  Link dotfiles"
 
 info "Backup dir: $BACKUP_DIR"
 
-link_config "$DOTFILES_DIR/.config/hypr"               "$HOME/.config/hypr"
-link_config "$DOTFILES_DIR/.config/waybar"             "$HOME/.config/waybar"
-link_config "$DOTFILES_DIR/.config/rofi"               "$HOME/.config/rofi"
-link_config "$DOTFILES_DIR/.config/dunst"              "$HOME/.config/dunst"
-link_config "$DOTFILES_DIR/.config/kitty"              "$HOME/.config/kitty"
-link_config "$DOTFILES_DIR/.config/nvim"               "$HOME/.config/nvim"
+link_config "$DOTFILES_DIR/.config/hypr" "$HOME/.config/hypr"
+link_config "$DOTFILES_DIR/.config/waybar" "$HOME/.config/waybar"
+link_config "$DOTFILES_DIR/.config/rofi" "$HOME/.config/rofi"
+link_config "$DOTFILES_DIR/.config/dunst" "$HOME/.config/dunst"
+link_config "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
+link_config "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 
 mkdir -p "$HOME/.config/Code/User"
 link_config "$DOTFILES_DIR/.config/Code/User/settings.json" \
-                                                        "$HOME/.config/Code/User/settings.json"
+    "$HOME/.config/Code/User/settings.json"
 
 mkdir -p "$HOME/.config/lazygit"
 link_config "$DOTFILES_DIR/.config/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
 
-link_config "$DOTFILES_DIR/.config/mpv"                "$HOME/.config/mpv"
-link_config "$DOTFILES_DIR/.config/yazi"               "$HOME/.config/yazi"
-link_config "$DOTFILES_DIR/.config/zathura"            "$HOME/.config/zathura"
-link_config "$DOTFILES_DIR/.config/btop"               "$HOME/.config/btop"
+link_config "$DOTFILES_DIR/.config/mpv" "$HOME/.config/mpv"
+link_config "$DOTFILES_DIR/.config/yazi" "$HOME/.config/yazi"
+link_config "$DOTFILES_DIR/.config/zathura" "$HOME/.config/zathura"
+link_config "$DOTFILES_DIR/.config/btop" "$HOME/.config/btop"
 link_config "$DOTFILES_DIR/.config/starship/starship.toml" \
-                                                        "$HOME/.config/starship.toml"
-link_config "$DOTFILES_DIR/.config/gtk-3.0"            "$HOME/.config/gtk-3.0"
-link_config "$DOTFILES_DIR/.config/gtk-4.0"            "$HOME/.config/gtk-4.0"
+    "$HOME/.config/starship.toml"
+link_config "$DOTFILES_DIR/.config/gtk-3.0" "$HOME/.config/gtk-3.0"
+link_config "$DOTFILES_DIR/.config/gtk-4.0" "$HOME/.config/gtk-4.0"
 
 mkdir -p "$HOME/.config/environment.d"
 link_config "$DOTFILES_DIR/.config/environment.d/hyprland.conf" \
-                                                        "$HOME/.config/environment.d/hyprland.conf"
+    "$HOME/.config/environment.d/hyprland.conf"
 
-link_config "$DOTFILES_DIR/home/.zshrc"                "$HOME/.zshrc"
-link_config "$DOTFILES_DIR/home/.zprofile"             "$HOME/.zprofile"
-link_config "$DOTFILES_DIR/home/.editorconfig"         "$HOME/.editorconfig"
+link_config "$DOTFILES_DIR/home/.zshrc" "$HOME/.zshrc"
+link_config "$DOTFILES_DIR/home/.zprofile" "$HOME/.zprofile"
+link_config "$DOTFILES_DIR/home/.editorconfig" "$HOME/.editorconfig"
 
 # .gitconfig — preserve real config, only link placeholder if nothing there
 if [[ ! -f "$HOME/.gitconfig" && ! -L "$HOME/.gitconfig" ]]; then
@@ -405,7 +418,7 @@ elif grep -q "Your Name" "$HOME/.gitconfig" 2>/dev/null; then
     warn ".gitconfig still has placeholder values — edit name/email"
 else
     skip "~/.gitconfig (real config preserved)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 # Docker daemon config
@@ -413,7 +426,7 @@ if pacman -Qi docker &>/dev/null; then
     system_copy "$DOTFILES_DIR/.config/docker/daemon.json" "/etc/docker/daemon.json"
 else
     skip "Docker daemon config (docker not installed)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 ok "All dotfiles processed"
@@ -432,11 +445,11 @@ if pacman -Qi ly &>/dev/null; then
 
     if [[ -f "$LY_DEST" ]] && diff -q <(echo "$RENDERED") "$LY_DEST" &>/dev/null; then
         skip "Ly config (unchanged)"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
-        echo "$RENDERED" | sudo tee "$LY_DEST" > /dev/null
+        echo "$RENDERED" | sudo tee "$LY_DEST" >/dev/null
         ok "Ly config → $LY_DEST (user=$(whoami))"
-        (( CONFIGURED++ )) || true
+        ((CONFIGURED++)) || true
     fi
 
     LY_SAVE="/etc/ly/save"
@@ -444,11 +457,11 @@ if pacman -Qi ly &>/dev/null; then
     CURRENT_SAVE="$(sudo cat "$LY_SAVE" 2>/dev/null || echo '')"
     if [[ "$CURRENT_SAVE" == "$EXPECTED" ]]; then
         skip "Ly save file (unchanged)"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
-        echo "$EXPECTED" | sudo tee "$LY_SAVE" > /dev/null
+        echo "$EXPECTED" | sudo tee "$LY_SAVE" >/dev/null
         ok "Ly save file → session=hyprland user=$(whoami)"
-        (( CONFIGURED++ )) || true
+        ((CONFIGURED++)) || true
     fi
 
     for DM in gdm sddm lightdm xdm lxdm wdm nodm greetd display-manager; do
@@ -468,11 +481,11 @@ if pacman -Qi ly &>/dev/null; then
     enable_service ly@tty2.service
 else
     skip "Ly config (ly not installed)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 system_copy "$DOTFILES_DIR/.config/hypr/scripts/tty-colors.sh" \
-            "/etc/profile.d/tty-colors.sh"
+    "/etc/profile.d/tty-colors.sh"
 sudo chmod +x /etc/profile.d/tty-colors.sh
 
 # ════════════════════════════════════════════════════════════════════
@@ -486,11 +499,11 @@ ok "Hypr scripts made executable"
 ZSH_PATH="$(command -v zsh)"
 if [[ "$SHELL" == "$ZSH_PATH" ]]; then
     skip "Default shell (already zsh)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 else
     chsh -s "$ZSH_PATH"
     ok "Default shell → zsh (takes effect on next login)"
-    (( CONFIGURED++ )) || true
+    ((CONFIGURED++)) || true
 fi
 
 # Docker
@@ -501,12 +514,12 @@ if pacman -Qi docker &>/dev/null; then
         ok "Docker service started"
     else
         skip "Docker service (already running)"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     fi
     add_group docker
 else
     skip "Docker setup (not installed)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 # VirtualBox
@@ -514,15 +527,15 @@ if pacman -Qi virtualbox &>/dev/null; then
     add_group vboxusers
     if lsmod | grep -q vboxdrv; then
         skip "VirtualBox kernel module (already loaded)"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
-        sudo modprobe vboxdrv \
-            && ok "VirtualBox kernel module loaded" \
-            || warn "modprobe vboxdrv failed — reboot to finish VirtualBox setup"
+        sudo modprobe vboxdrv &&
+            ok "VirtualBox kernel module loaded" ||
+            warn "modprobe vboxdrv failed — reboot to finish VirtualBox setup"
     fi
 else
     skip "VirtualBox setup (not installed)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 # Avahi
@@ -533,11 +546,11 @@ if pacman -Qi avahi &>/dev/null; then
         ok "avahi-daemon started"
     else
         skip "avahi-daemon (already running)"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     fi
 else
     skip "avahi-daemon (not installed)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 # Sunshine capabilities
@@ -545,34 +558,34 @@ if command -v sunshine &>/dev/null; then
     SUNSHINE_BIN="$(command -v sunshine)"
     if getcap "$SUNSHINE_BIN" 2>/dev/null | grep -q cap_sys_admin; then
         skip "Sunshine capabilities (already set)"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
-        sudo setcap cap_sys_admin+p "$SUNSHINE_BIN" \
-            && ok "Sunshine capabilities set" \
-            || warn "setcap failed — run manually after install"
-        (( CONFIGURED++ )) || true
+        sudo setcap cap_sys_admin+p "$SUNSHINE_BIN" &&
+            ok "Sunshine capabilities set" ||
+            warn "setcap failed — run manually after install"
+        ((CONFIGURED++)) || true
     fi
 else
     skip "Sunshine capabilities (not installed)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 # User directories
 for dir in Projects Downloads "Pictures/Screenshots" Documents Videos Music; do
     if [[ -d "$HOME/$dir" ]]; then
         skip "~/$dir"
-        (( SKIPPED++ )) || true
+        ((SKIPPED++)) || true
     else
         mkdir -p "$HOME/$dir"
         ok "Created: ~/$dir"
-        (( CONFIGURED++ )) || true
+        ((CONFIGURED++)) || true
     fi
 done
 
 # Notes vault
 mkdir -p "$HOME/notes/journal"
 if [[ ! -f "$HOME/notes/index.md" ]]; then
-    cat > "$HOME/notes/index.md" << 'NOTESEOF'
+    cat >"$HOME/notes/index.md" <<'NOTESEOF'
 # Notes
 
 Welcome to your notes vault.
@@ -580,22 +593,22 @@ Open with `<leader>nn` in Neovim.
 Create a journal entry with `<leader>nj`.
 NOTESEOF
     ok "Notes index created"
-    (( CONFIGURED++ )) || true
+    ((CONFIGURED++)) || true
 else
     skip "~/notes/index.md (exists)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 fi
 
 # Set default apps via xdg-mime
 if command -v xdg-mime &>/dev/null; then
     # imv as default image viewer
     xdg-mime default imv.desktop image/jpeg 2>/dev/null || true
-    xdg-mime default imv.desktop image/png  2>/dev/null || true
-    xdg-mime default imv.desktop image/gif  2>/dev/null || true
+    xdg-mime default imv.desktop image/png 2>/dev/null || true
+    xdg-mime default imv.desktop image/gif 2>/dev/null || true
     xdg-mime default imv.desktop image/webp 2>/dev/null || true
     # mpv as default video player
-    xdg-mime default mpv.desktop video/mp4  2>/dev/null || true
-    xdg-mime default mpv.desktop video/mkv  2>/dev/null || true
+    xdg-mime default mpv.desktop video/mp4 2>/dev/null || true
+    xdg-mime default mpv.desktop video/mkv 2>/dev/null || true
     xdg-mime default mpv.desktop video/x-matroska 2>/dev/null || true
     # zathura as default PDF viewer
     xdg-mime default org.pwmt.zathura.desktop application/pdf 2>/dev/null || true
@@ -616,7 +629,7 @@ step "9 / 9  LazyVim"
 
 if [[ -d "$HOME/.local/share/nvim/lazy/lazy.nvim" ]]; then
     skip "LazyVim (already bootstrapped)"
-    (( SKIPPED++ )) || true
+    ((SKIPPED++)) || true
 else
     info "LazyVim installs automatically on first nvim launch (~2 min)."
 fi
@@ -642,7 +655,7 @@ echo -e "${CYAN}${BOLD}After reboot:${RESET}"
 echo -e "  3. Ly login screen — session pre-set to ${YELLOW}hyprland${RESET}, just type password + Enter"
 echo -e "  4. Open terminal → run ${YELLOW}nvim${RESET} once → LazyVim installs plugins (~2 min)"
 echo -e "  5. Run ${YELLOW}nwg-look${RESET} → apply GTK dark theme + Papirus icons"
-[[ -d "$BACKUP_DIR" ]] && \
+[[ -d "$BACKUP_DIR" ]] &&
     echo -e "  6. Old configs backed up to: ${YELLOW}$BACKUP_DIR${RESET}"
 echo ""
 echo -e "${CYAN}Ly controls:${RESET}  Tab/arrows = move  |  F1 = shutdown  |  F2 = reboot  |  Enter = login"

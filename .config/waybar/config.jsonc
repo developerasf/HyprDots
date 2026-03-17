@@ -23,22 +23,14 @@
         "backlight",
         "battery",
         "network",
-        "cpu",
-        "memory",
+        "bluetooth",
+        "temperature",
         "custom/power"
     ],
 
     // ── Left ──────────────────────────────────────────────────────────────────
     "hyprland/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "1": "󰆍",
-            "2": "󰈹",
-            "3": "󰨞",
-            "4": "󰉋",
-            "5": "󰌗",
-            "default": "󰊠"
-        },
+        "format": "{name}",
         "on-click": "activate",
         "sort-by-number": true
     },
@@ -49,8 +41,8 @@
 
     // ── Center ────────────────────────────────────────────────────────────────
     "clock": {
-        "format": "  {:%H:%M}",
-        "format-alt": "  {:%a %d %b %Y}",
+        "format": "  {:%H:%M | %a %d %b %Y}",
+       // "format-alt": "  {:%a %d %b %Y}",
         "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
         "on-click": "toggle-alt"
     },
@@ -85,12 +77,25 @@
         "format-plugged":  "󰚥 {capacity}%",
         "format-icons": ["󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"]
     },
+    
     "network": {
         "format-wifi":          "󰤨 {essid}",
-        "format-ethernet":      "󰈀 Wired",
-        "format-disconnected":  "󰤭 Off",
+        "format-ethernet":      "󰈀 {essid}",
+        "format-disconnected":  "󰤭 ",
         "tooltip-format":       "󰤨 {ipaddr}/{cidr}\n󰾍 {gwaddr}",
+        "tooltip-format-disconnected": "Disconnected",
         "on-click":             "kitty -e nmtui"
+    },
+     "bluetooth": {
+        "format": " {status}",
+        "format-connected": " {device_alias}",
+        "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+        // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+        "on-click": "blueman-manager"
     },
     "cpu": {
         "format": "󰻠 {usage}%",
@@ -102,6 +107,12 @@
         "interval": 5,
         "on-click": "kitty -e btop"
     },
+     "temperature": {
+    "thermal-zone": 3, // Matches your x86_pkg_temp
+    "critical-threshold": 90,
+    "format": "{icon} {temperatureC}°C",
+    "format-icons": ["", "", ""]
+	},
     "custom/power": {
         "format": "󰐥",
         "on-click": "~/.config/hypr/scripts/powermenu.sh",

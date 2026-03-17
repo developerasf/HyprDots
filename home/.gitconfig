@@ -4,8 +4,8 @@
 # Edit [user] section with your real name and email after install.
 
 [user]
-    name  = Your Name
-    email = you@example.com
+    name  = "Md. Al Amin"
+    email = alaminsarkar863@gmail.com
 
 [core]
     editor     = nvim
@@ -65,8 +65,8 @@
 [credential]
     helper = store
 
-[url "git@github.com:"]
-    insteadOf = https://github.com/
+[url "https://github.com/"]
+   
 
 [delta]
     navigate    = true
@@ -77,3 +77,5 @@
 
 [interactive]
     diffFilter = delta --color-only
+[url "https://github.com/"]
+	
