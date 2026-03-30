@@ -27,83 +27,79 @@ gui:
     searchingActiveBorderColor:
       - "#e0af68"
       - bold
-
   # Layout
-  showIcons:          true
-  nerdFontsVersion:   "3"
-  showFileTree:       true
-  showRandomTip:      false
-  showCommandLog:     true
-  commandLogSize:     4
-  mouseEvents:        true
+  showIcons: true
+  nerdFontsVersion: "3"
+  showFileTree: true
+  showRandomTip: false
+  showCommandLog: true
+  commandLogSize: 4
+  mouseEvents: true
   skipNoStagedFilesWarning: false
-  sidePanelWidth:     0.3
+  sidePanelWidth: 0.3
   expandFocusedSidePanel: false
   mainPanelSplitMode: "flexible"
-  language:           "auto"
-  timeFormat:         "02 Jan 06 15:04"
-  shortTimeFormat:    "3:04PM"
-
+  language: "auto"
+  timeFormat: "02 Jan 06 15:04"
+  shortTimeFormat: "3:04PM"
   # Borders
   border: "rounded"
-
 keybinding:
   universal:
-    quit:           "q"
-    quit-alt1:      "<c-c>"
-    return:         "<esc>"
+    quit: "q"
+    quit-alt1: "<c-c>"
+    return: "<esc>"
     quitWithoutChangingDirectory: "Q"
-    togglePanel:    "<tab>"
-    prevItem:       "<up>"
-    nextItem:       "<down>"
-    prevItem-alt:   "k"
-    nextItem-alt:   "j"
-    prevPage:       ","
-    nextPage:       "."
-    gotoTop:        "<"
-    gotoBottom:     ">"
-    scrollLeft:     "H"
-    scrollRight:    "L"
-    prevBlock:      "<left>"
-    nextBlock:      "<right>"
-    prevBlock-alt:  "h"
-    nextBlock-alt:  "l"
-    jumpToBlock:    ["1", "2", "3", "4", "5"]
-    nextMatch:      "n"
-    prevMatch:      "N"
-    startSearch:    "/"
-    optionMenu:     "x"
+    togglePanel: "<tab>"
+    prevItem: "<up>"
+    nextItem: "<down>"
+    prevItem-alt: "k"
+    nextItem-alt: "j"
+    prevPage: ","
+    nextPage: "."
+    gotoTop: "<"
+    gotoBottom: ">"
+    scrollLeft: "H"
+    scrollRight: "L"
+    prevBlock: "<left>"
+    nextBlock: "<right>"
+    prevBlock-alt: "h"
+    nextBlock-alt: "l"
+    jumpToBlock: ["1", "2", "3", "4", "5"]
+    nextMatch: "n"
+    prevMatch: "N"
+    startSearch: "/"
+    optionMenu: "x"
     optionMenu-alt1: "?"
-    select:         "<space>"
-    goInto:         "<enter>"
-    remove:         "d"
-    new:            "n"
-    edit:           "e"
-    openFile:       "o"
+    select: "<space>"
+    goInto: "<enter>"
+    remove: "d"
+    new: "n"
+    edit: "e"
+    openFile: "o"
     copyToClipboard: "<c-o>"
     submitEditorText: "<enter>"
-    extrasMenu:     "@"
-    pushFiles:      "P"
-    pullFiles:      "p"
-    refresh:        "R"
+    extrasMenu: "@"
+    pushFiles: "P"
+    pullFiles: "p"
+    refresh: "R"
     createPatchOptionsMenu: "<c-p>"
-    nextTab:        "]"
-    prevTab:        "["
+    nextTab: "]"
+    prevTab: "["
     nextScreenMode: "+"
     prevScreenMode: "_"
-    undo:           "z"
-    redo:           "<c-z>"
-    filteringMenu:  "<c-s>"
-    diffingMenu:    "W"
+    undo: "z"
+    redo: "<c-z>"
+    filteringMenu: "<c-s>"
+    diffingMenu: "W"
     diffingMenu-alt: "<c-e>"
-    copyURL:        "<c-y>"
+    copyURL: "<c-y>"
     openRecentRepos: "<c-r>"
     createRebaseOptionsMenu: "m"
-
 git:
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
   commit:
     signOff: false
     autoWrapCommitMessage: true
@@ -122,23 +118,20 @@ git:
   autoRefresh: true
   fetchAll: true
   branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
-  allBranchesLogCmd: "git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=medium"
   disableForcePushing: false
   parseEmoji: true
-
+  allBranchesLogCmds:
+    - git log --graph --all --color=always --abbrev-commit --decorate --date=relative  --pretty=medium
 os:
   edit: "nvim {{filename}}"
   editAtLine: "nvim +{{line}} {{filename}}"
   editAtLineAndWait: "nvim +{{line}} {{filename}}"
   open: "xdg-open {{filename}} &>/dev/null &"
-
 refresher:
   refreshInterval: 10
-  fetchInterval:   60
-
+  fetchInterval: 60
 update:
   method: prompt
   days: 14
-
 confirmOnQuit: false
 quitOnTopLevelReturn: false

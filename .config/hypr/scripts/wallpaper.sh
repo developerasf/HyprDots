@@ -12,13 +12,13 @@ TRANSITION_FPS=60
 TRANSITION_POS="0.5,0.5"   # center of screen
 
 # Make sure swww daemon is running
-if ! pgrep -x swww-daemon > /dev/null; then
-    swww-daemon &
+if ! pgrep -x awww-daemon > /dev/null; then
+    awww-daemon &
     sleep 0.5
 fi
 
 # Pick a random wallpaper — skip the current one if possible
-CURRENT=$(swww query 2>/dev/null | grep -oP "image: \K.*" | head -1)
+CURRENT=$(awww query 2>/dev/null | grep -oP "image: \K.*" | head -1)
 WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( \
     -iname "*.jpg" -o \
     -iname "*.jpeg" -o \
@@ -44,7 +44,7 @@ if [[ -z "$WALLPAPER" ]]; then
 fi
 
 # Set the wallpaper with grow transition from center
-swww img "$WALLPAPER" \
+awww img "$WALLPAPER" \
     --transition-type "$TRANSITION" \
     --transition-duration "$TRANSITION_DURATION" \
     --transition-fps "$TRANSITION_FPS" \

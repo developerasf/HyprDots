@@ -6,9 +6,9 @@
     "position": "top",
     "height": 36,
     "spacing": 4,
-    "margin-top": 6,
-    "margin-left": 10,
-    "margin-right": 10,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
 
     "modules-left": [
         "hyprland/workspaces",
@@ -42,10 +42,9 @@
     // ── Center ────────────────────────────────────────────────────────────────
     "clock": {
         "format": "  {:%H:%M | %a %d %b %Y}",
-       // "format-alt": "  {:%a %d %b %Y}",
-        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
-        "on-click": "toggle-alt"
-    },
+
+        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>"
+          },
 
     // ── Right ─────────────────────────────────────────────────────────────────
     "tray": {
@@ -77,7 +76,7 @@
         "format-plugged":  "󰚥 {capacity}%",
         "format-icons": ["󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"]
     },
-    
+
     "network": {
         "format-wifi":          "󰤨 {essid}",
         "format-ethernet":      "󰈀 {essid}",
