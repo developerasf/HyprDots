@@ -3,7 +3,7 @@
 # HyprDots
 
 **A clean, modular Hyprland dotfiles setup**
-Tokyo Night · Intel iGPU · Full-stack Dev
+Tokyo Night + Catppuccin · Intel iGPU · Full-stack Dev
 
 ![Hyprland](https://img.shields.io/badge/Hyprland-0.45%2B-blue?style=flat-square&logo=wayland)
 ![Arch Linux](https://img.shields.io/badge/Arch_Linux-rolling-1793D1?style=flat-square&logo=arch-linux)
@@ -25,20 +25,23 @@ Tokyo Night · Intel iGPU · Full-stack Dev
 | **Notifications** | Dunst |
 | **Lock Screen** | Hyprlock |
 | **Idle Daemon** | Hypridle |
-| **Wallpaper** | swww |
+| **Wallpaper** | awww |
 | **Terminal** | Kitty |
 | **Shell** | Zsh + Starship prompt |
 | **Editor (TUI)** | Neovim + LazyVim |
 | **Editor (GUI)** | VS Code |
+| **Browser** | Firefox (Brave also installed) |
 | **File Manager (GUI)** | Thunar |
 | **File Manager (TUI)** | Yazi |
+| **File Transfer** | LocalSend |
 | **PDF Viewer** | Zathura |
 | **Video Player** | mpv |
 | **Image Viewer** | imv |
+| **Screenshot** | Grimblast |
 | **Office Suite** | LibreOffice Fresh |
 | **VM** | Oracle VirtualBox |
 | **Game Streaming** | Sunshine (Moonlight host) |
-| **Theme** | Tokyo Night (system-wide) |
+| **Theme** | Tokyo Night (Hyprland) + Catppuccin (GTK) |
 | **Icons** | Papirus Dark |
 | **Font** | JetBrainsMono Nerd Font |
 
@@ -111,31 +114,31 @@ The script is fully automated. It will:
 
 ### Hyprland ecosystem
 `hyprland` `xdg-desktop-portal-hyprland` `waybar` `dunst` `rofi-wayland`
-`hyprlock` `hypridle` `swww` `polkit-kde-agent`
+`hyprlock` `hypridle` `awww` `polkit-kde-agent` `grimblast-git`
 
 ### Terminal & shell
 `kitty` `zsh` `starship` `zsh-autosuggestions` `zsh-syntax-highlighting`
 
 ### Editors & dev tools
-`neovim` `lazygit` `lazydocker` `github-cli` `ripgrep` `fd` `bat` `git-delta`
+`neovim` `lazygit` `lazydocker-bin` `github-cli` `ripgrep` `fd` `bat` `git-delta`
 `visual-studio-code-bin`
 
 ### Docker & containers
 `docker` `docker-compose`
 
 ### Language toolchains
-`nodejs` `npm` `pnpm` `typescript` — via nvm
+`nodejs` `npm` `pnpm` `typescript` — via pacman + nvm
 `python` `python-pip` `python-virtualenv` — via pyenv
 `rust` `cargo` — via rustup
 `go` `gcc` `gdb` `jdk-openjdk`
 
 ### Files & media
-`thunar` `yazi` `mpv` `imv` `zathura` `firefox`
+`thunar` `yazi` `mpv` `imv` `zathura` `brave-bin` `localsend-bin` `persepolis`
 
 ### System utilities
 `pipewire` `wireplumber` `pipewire-pulse` `pavucontrol`
 `brightnessctl` `playerctl` `cliphist` `wl-clipboard`
-`htop` `btop` `man-db` `p7zip` `unzip` `unarchiver`
+`htop` `btop` `man-db` `p7zip` `unzip` `unarchiver` `icu76`
 
 ### VM & streaming
 `virtualbox` `virtualbox-host-modules-arch` `sunshine-bin` `avahi`
@@ -144,13 +147,14 @@ The script is fully automated. It will:
 `libreoffice-fresh` `pandoc-bin`
 
 ### Theming
-`catppuccin-gtk-theme-mocha` `papirus-icon-theme`
+`catppuccin-gtk-theme-mocha` `papirus-icon-theme` (GTK apps)
 `ttf-jetbrains-mono-nerd` `ttf-font-awesome`
 `noto-fonts` `noto-fonts-emoji` `nwg-look`
 `gtk-3.0` and `gtk-4.0` dark mode settings
+Tokyo Night palette for Hyprland/Waybar/Rofi (in `~/.config/hypr/themes/colors.conf`)
 
 ### Display manager
-`ly` (TUI display manager — replaces SDDM/GDM)
+`ly-bin` (TUI display manager — replaces SDDM/GDM)
 
 ---
 
@@ -287,12 +291,14 @@ dotfiles/
 | Keybind | Action |
 |---|---|
 | `SUPER + Return` | Terminal (Kitty) |
-| `SUPER + D` | App launcher (Rofi) |
+| `SUPER + Space` | App launcher (Rofi) |
 | `SUPER + E` | File manager (Thunar) |
 | `SUPER + B` | Browser (Firefox) |
 | `SUPER + N` | Neovim |
+| `SUPER + L` | Lock screen (Hyprlock) |
 | `SUPER + SHIFT + E` | Power menu (lock / suspend / reboot / shutdown) |
 | `SUPER + V` | Clipboard history picker |
+| `SUPER + W` | Random wallpaper |
 
 ### Windows
 | Keybind | Action |
@@ -315,8 +321,8 @@ dotfiles/
 ### Workspaces
 | Keybind | Action |
 |---|---|
-| `SUPER + 1–9` | Switch to workspace |
-| `SUPER + SHIFT + 1–9` | Move window to workspace |
+| `SUPER + 1–9, 0` | Switch to workspace 1–10 |
+| `SUPER + SHIFT + 1–9, 0` | Move window to workspace 1–10 |
 | `SUPER + Tab` | Next workspace |
 | `SUPER + SHIFT + Tab` | Previous workspace |
 | `SUPER + Scroll` | Cycle workspaces |
@@ -345,6 +351,7 @@ dotfiles/
 | `SUPER + SHIFT + Q` | Exit Hyprland |
 | `SUPER + mouse drag` | Move window |
 | `SUPER + right mouse drag` | Resize window |
+| `XF86PowerOff` | Lock screen |
 
 ---
 
@@ -359,6 +366,8 @@ Windows are auto-assigned to workspaces:
 | 3 | Code (VS Code / Neovim) |
 | 4 | Files (Thunar / Zathura) |
 | 5 | VirtualBox |
+| 6 | (custom) |
+| 7-10 | (custom) |
 
 ---
 
@@ -425,11 +434,11 @@ Hyprland
 
 ### No wallpaper showing
 ```bash
-# Make sure swww-daemon is running
-pgrep swww-daemon || swww-daemon
+# Make sure awww-daemon is running
+pgrep awww-daemon || awww-daemon
 
 # Set wallpaper manually
-swww img ~/.config/hypr/wallpapers/your-wallpaper.jpg
+awww img ~/.config/hypr/wallpapers/your-wallpaper.jpg
 ```
 
 ### Waybar not showing
@@ -523,12 +532,12 @@ gh auth login
 
 - [Hyprland](https://hyprland.org) — Wayland compositor
 - [LazyVim](https://lazyvim.org) — Neovim config framework
-- [Tokyo Night](https://github.com/enkia/tokyo-night-vscode-theme) — color scheme
+- [Tokyo Night](https://github.com/enkia/tokyo-night-vscode-theme) — Hyprland color scheme
 - [Catppuccin](https://catppuccin.com) — GTK theme
 - [Papirus](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) — icon theme
 
 ---
 
 <div align="center">
-Made for Arch Linux · Hyprland · Tokyo Night
+Made for Arch Linux · Hyprland · Tokyo Night + Catppuccin
 </div>
