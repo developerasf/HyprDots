@@ -310,7 +310,7 @@ step "4 / 9  AUR packages"
 #   --cleanafter           clean build cache after install
 #   --noredownload         don't re-download if cached
 
-aur_install swww
+aur_install awww
 aur_install yazi
 aur_install grimblast-git grimblast grimblast-git    # check both names — AUR installs as grimblast-git
 aur_install lazydocker-bin lazydocker lazydocker-bin # lazydocker already installed → skip

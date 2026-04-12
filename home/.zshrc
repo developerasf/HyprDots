@@ -36,7 +36,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"       # Rust
 export PATH="$HOME/go/bin:$PATH"           # Go
 export PATH="$HOME/.npm-global/bin:$PATH"  # npm global
-
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+export ANDROID_HOME=/home/asf/Android/Sdk
 # ── nvm (Node version manager) ────────────────────────────────────────────────
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
@@ -177,3 +178,7 @@ extract() {
 
 # opencode
 export PATH=/home/asf/.opencode/bin:$PATH
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

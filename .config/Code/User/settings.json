@@ -23,7 +23,7 @@
   "editor.detectIndentation": true,
   "editor.wordWrap": "on",
   "editor.rulers": [80, 120],
-  "editor.cursorBlinking": "smooth",
+  "editor.cursorBlinking": "expand",
   "editor.cursorStyle": "line",
   "editor.smoothScrolling": true,
   "editor.minimap.enabled": false,
@@ -62,10 +62,9 @@
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.exclude": {
-    "**/.git": true,
     "**/__pycache__": true,
     "**/.DS_Store": true,
-    "**/node_modules": true,
+    "**/.git": true,
   },
 
   // ── Git ───────────────────────────────────────────────────────────────────
@@ -121,4 +120,21 @@
   "telemetry.telemetryLevel": "off",
   "update.mode": "manual",
   "breadcrumbs.enabled": false,
+  "editor.overtypeCursorStyle": "line",
+  "python.autoComplete.extraPaths": [],
+  "editor.quickSuggestions": {
+    "other": "off",
+    "comments": "off",
+    "strings": "off",
+  },
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+  },
+  "C_Cpp.autocompleteAddParentheses": true,
+  "explorer.autoRevealExclude": {
+    "**/node_modules": false,
+  },
 }
